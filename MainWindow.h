@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+#include <QAction>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMenu>
@@ -17,19 +18,26 @@ public:
     ~MainWindow();
 
 private:
-    /* basic functionality */
-    void createButtons();
-    void createCommandDock();
+    /* graphical elements */
+    void createActions();
     void createCommandLine();
     void createMenuBar();
+    //void createOptionsMenu();
     void createProgressBar();
     void createSideBar();
     void createStatusBar();
     void createToolBar();
-    void createToolDock();
+
+    /* actions */
+    QAction *m_cutAction;
+    QAction *m_drillAction;
+    QAction *m_grindAction;
+    QAction *m_grabAction;
+    QAction *m_vacuumAction;
 
     /* command line */
-    void commandLine();
+    void commandLineInput();
+    void executeCommand(const QString &command);
     QLineEdit *m_input;
     QListWidget *m_commandLine;
 
@@ -42,11 +50,7 @@ private:
     QMenu *m_helpMenu;
 
     /* tool bar */
-    QToolBar *m_cutToolBar;
-    QToolBar *m_drillToolBar;
-    QToolBar *m_grindToolBar;
-    QToolBar *m_grabToolBar;
-    QToolBar *m_vacuumToolBar;
+    QToolBar *m_toolBar;
 
     /* tool dock */
 };

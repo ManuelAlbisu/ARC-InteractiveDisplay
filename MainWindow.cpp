@@ -1,46 +1,79 @@
 #include "MainWindow.h"
 
 #include <QDockWidget>
+#include <QIcon>
+#include <QSize>
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     resize(800, 600);
 
+    createActions();
     createMenuBar();
     createToolBar();
+    createCommandLine();
 }
 
 MainWindow::~MainWindow() { }
 
-/* creates the buttons */
-void MainWindow::createButtons() { }
+void MainWindow::createActions() {
+    // cut action
+    m_cutAction = new QAction("Cut");
+    m_cutAction->setStatusTip("View cut options...");
+    m_cutAction->setIcon(QIcon(":/icons/test.svg"));
 
-/* creates command line dock */
-void MainWindow::createCommandDock() {
+    // drill action
+    m_drillAction = new QAction("Drill");
+    m_drillAction->setStatusTip("View drill options...");
+    m_drillAction->setIcon(QIcon(":/icons/test.svg"));
+
+    // grind action
+    m_grindAction = new QAction("Grind");
+    m_grindAction->setStatusTip("View grind options...");
+    m_grindAction->setIcon(QIcon(":/icons/test.svg"));
+
+    // grab action
+    m_grabAction = new QAction("Grab");
+    m_grabAction->setStatusTip("View grab options...");
+    m_grabAction->setIcon(QIcon(":/icons/test.svg"));
+
+    // vacuum action
+    m_vacuumAction = new QAction("Vacuum");
+    m_vacuumAction->setStatusTip("View vacuum options...");
+    m_vacuumAction->setIcon(QIcon(":/icons/test.svg"));
+}
+
+void MainWindow::createCommandLine() {
+    // creates command line
+    m_commandLine = new QListWidget();
+    m_input = new QLineEdit();
+
     // creates command line dock
     QDockWidget *dock = new QDockWidget("Command Line", this);
     dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
                           | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    // Adds console to vertical layout
+    // command line layout
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(m_commandLine);
     layout->addWidget(m_input);
 
-    // Sets layout to a widget
+    // sets layout to command line widget
     QWidget *widget = new QWidget();
     widget->setLayout(layout);
 
-    // Adds console widget to dock
+    // adds command line widget to dock
     dock->setWidget(widget);
-    addDockWidget(Qt::RightDockWidgetArea, dock);
+    addDockWidget(Qt::BottomDockWidgetArea, dock);
     m_viewMenu->addAction(dock->toggleViewAction());
+
+    // command line starting input
+    m_commandLine->addItem("Input line");
+
+    // sends input to command line
+    //connect(m_input, SIGNAL(returnPressed()), this, SLOT(commandLineInput()));
 }
 
-/* creates the command line box */
-void MainWindow::createCommandLine() { }
-
-/* creates menu bar */
 void MainWindow::createMenuBar() {
     // file menu
     m_fileMenu = menuBar()->addMenu("&File");
@@ -61,42 +94,17 @@ void MainWindow::createMenuBar() {
     m_helpMenu = menuBar()->addMenu("&Help");
 }
 
-/* creates progress bar */
 void MainWindow::createProgressBar() { }
 
-/* creates side bar */
 void MainWindow::createSideBar() { }
 
-/* creates status bar */
 void MainWindow::createStatusBar() { }
 
-/* creates tool bar */
 void MainWindow::createToolBar() {
-    // cut tool bar
-    m_cutToolBar = addToolBar("Cut");
-
-    // drill tool bar
-    m_drillToolBar = addToolBar("Drill");
-
-    // grind tool bar
-    m_grindToolBar = addToolBar("Grind");
-
-    // grab tool bar
-    m_grabToolBar = addToolBar("Grab");
-
-    // vacuum tool bar
-    m_vacuumToolBar = addToolBar("Vacuum");
-}
-
-/* creates tool dock */
-void MainWindow::createToolDock() { }
-
-/* handles the command line input */
-void MainWindow::commandLine() {
-    // creates command line
-    m_commandLine = new QListWidget();
-    m_input = new QLineEdit();
-
-    // prompts user for help at application start
-    m_commandLine->addItem("Type 'list' for available commands.");
+    m_toolBar = addToolBar("Operations");
+    m_toolBar->addAction(m_cutAction);
+    m_toolBar->addAction(m_drillAction);
+    m_toolBar->addAction(m_grindAction);
+    m_toolBar->addAction(m_grabAction);
+    m_toolBar->addAction(m_vacuumAction);
 }
