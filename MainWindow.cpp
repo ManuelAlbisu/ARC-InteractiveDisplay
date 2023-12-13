@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+//#include "CommandLine.h"
 
 #include <QDockWidget>
 #include <QIcon>
@@ -44,34 +45,34 @@ void MainWindow::createActions() {
 }
 
 void MainWindow::createCommandLine() {
-    // creates command line
+    // initializes the command line
     m_commandLine = new QListWidget();
     m_input = new QLineEdit();
 
-    // creates command line dock
+    // creates the command line dock
     QDockWidget *dock = new QDockWidget("Command Line", this);
     dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
                           | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    // command line layout
+    // creates the command line layout
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(m_commandLine);
     layout->addWidget(m_input);
 
-    // sets layout to command line widget
+    // sets the layout to the command line widget
     QWidget *widget = new QWidget();
     widget->setLayout(layout);
 
-    // adds command line widget to dock
+    // adds the command line widget to the dock
     dock->setWidget(widget);
     addDockWidget(Qt::BottomDockWidgetArea, dock);
     m_viewMenu->addAction(dock->toggleViewAction());
 
-    // command line starting input
-    m_commandLine->addItem("Input line");
+    // sets starting text
+    m_commandLine->addItem("Input command");
 
     // sends input to command line
-    //connect(m_input, SIGNAL(returnPressed()), this, SLOT(commandLineInput()));
+    connect(m_input, SIGNAL(returnPressed()), this, SLOT(commandLineInput()));
 }
 
 void MainWindow::createMenuBar() {
@@ -94,6 +95,8 @@ void MainWindow::createMenuBar() {
     m_helpMenu = menuBar()->addMenu("&Help");
 }
 
+void MainWindow::createOptionsMenu() { }
+
 void MainWindow::createProgressBar() { }
 
 void MainWindow::createSideBar() { }
@@ -107,4 +110,20 @@ void MainWindow::createToolBar() {
     m_toolBar->addAction(m_grindAction);
     m_toolBar->addAction(m_grabAction);
     m_toolBar->addAction(m_vacuumAction);
+}
+
+void MainWindow::commandLineInput() {
+    // sends command to command line then clears input box
+    QString command = m_input->text();
+    m_commandLine->addItem(command);
+    executeCommand(command);
+    m_input->clear();
+}
+
+void MainWindow::executeCommand(const QString &command) {
+    static QRegularExpression re("\\s+");
+    QStringList list = command.split(re);
+
+    if (command.toLower() == "clear")
+        m_commandLine->clear();
 }

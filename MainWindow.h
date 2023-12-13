@@ -17,12 +17,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void commandLineInput();
+    void executeCommand(const QString &command);
+
 private:
     /* graphical elements */
     void createActions();
     void createCommandLine();
     void createMenuBar();
-    //void createOptionsMenu();
+    void createOptionsMenu();
     void createProgressBar();
     void createSideBar();
     void createStatusBar();
@@ -36,8 +40,6 @@ private:
     QAction *m_vacuumAction;
 
     /* command line */
-    void commandLineInput();
-    void executeCommand(const QString &command);
     QLineEdit *m_input;
     QListWidget *m_commandLine;
 
@@ -45,14 +47,15 @@ private:
     QMenu *m_fileMenu;
     QMenu *m_editMenu;
     QMenu *m_selectionMenu;
-    QMenu *m_viewMenu;
     QMenu *m_runMenu;
     QMenu *m_helpMenu;
 
     /* tool bar */
     QToolBar *m_toolBar;
 
-    /* tool dock */
+protected:
+    QMenu *m_viewMenu;
+
 };
 
 #endif // MAINWINDOW_H

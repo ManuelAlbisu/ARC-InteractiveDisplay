@@ -21,15 +21,17 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
 
 set(PROJECT_SOURCES
         main.cpp
+        Camera.cpp
+        Camera.h
+        Console.cpp
+        Console.h
         MainWindow.cpp
         MainWindow.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(ARC-InteractiveDisplay
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
+    qt_add_executable(ARC-InteractiveDisplay MANUAL_FINALIZATION ${PROJECT_SOURCES})
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ARC-InteractiveDisplay APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
