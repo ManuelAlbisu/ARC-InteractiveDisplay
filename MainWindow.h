@@ -1,11 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "Camera.h"
+#include "Console.h"
+#include "Options.h"
+
 #include <QMainWindow>
 
 #include <QAction>
-#include <QLineEdit>
-#include <QListWidget>
 #include <QMenu>
 #include <QMenuBar>
 #include <QToolBar>
@@ -17,14 +19,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void commandLineInput();
-    void executeCommand(const QString &command);
-
 private:
     /* graphical elements */
     void createActions();
-    void createCommandLine();
+    void createCamera();
+    void createConsole();
     void createMenuBar();
     void createOptionsMenu();
     void createProgressBar();
@@ -39,9 +38,11 @@ private:
     QAction *m_grabAction;
     QAction *m_vacuumAction;
 
-    /* command line */
-    QLineEdit *m_input;
-    QListWidget *m_commandLine;
+    /* camera */
+    Camera *m_camera;
+
+    /* console */
+    Console *m_console;
 
     /* menu bar */
     QMenu *m_fileMenu;
@@ -49,6 +50,9 @@ private:
     QMenu *m_selectionMenu;
     QMenu *m_runMenu;
     QMenu *m_helpMenu;
+
+    /* options menu */
+    Options *m_optionsMenu;
 
     /* tool bar */
     QToolBar *m_toolBar;

@@ -1,18 +1,20 @@
 #include "MainWindow.h"
-//#include "CommandLine.h"
 
 #include <QDockWidget>
 #include <QIcon>
-#include <QSize>
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+    // set window size
     resize(800, 600);
 
+    // populate window
     createActions();
+    createCamera();
+    createConsole();
     createMenuBar();
+    createOptionsMenu();
     createToolBar();
-    createCommandLine();
 }
 
 MainWindow::~MainWindow() { }
@@ -44,35 +46,44 @@ void MainWindow::createActions() {
     m_vacuumAction->setIcon(QIcon(":/icons/test.svg"));
 }
 
-void MainWindow::createCommandLine() {
-    // initializes the command line
-    m_commandLine = new QListWidget();
-    m_input = new QLineEdit();
+void MainWindow::createCamera() {
+    m_camera = new Camera();
 
-    // creates the command line dock
-    QDockWidget *dock = new QDockWidget("Command Line", this);
+    // creates camera dock
+    QDockWidget *dock = new QDockWidget("Camera");
     dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
                           | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    // creates the command line layout
+    // creates the camera layout
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(m_commandLine);
-    layout->addWidget(m_input);
+    layout->addWidget(m_camera);
 
-    // sets the layout to the command line widget
+    // sets the layout to the camera widget
     QWidget *widget = new QWidget();
     widget->setLayout(layout);
 
-    // adds the command line widget to the dock
-    dock->setWidget(widget);
+    // adds the camera widget to the dock
+    addDockWidget(Qt::TopDockWidgetArea, dock);
+}
+
+void MainWindow::createConsole() {
+    m_console = new Console();
+
+    // creates the console dock
+    QDockWidget *dock = new QDockWidget("Command Line");
+    dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
+                          | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
+    // creates the console layout
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addWidget(m_console);
+
+    // sets the layout to the console widget
+    QWidget *widget = new QWidget();
+    widget->setLayout(layout);
+
+    // adds the console widget to the dock
     addDockWidget(Qt::BottomDockWidgetArea, dock);
-    m_viewMenu->addAction(dock->toggleViewAction());
-
-    // sets starting text
-    m_commandLine->addItem("Input command");
-
-    // sends input to command line
-    connect(m_input, SIGNAL(returnPressed()), this, SLOT(commandLineInput()));
 }
 
 void MainWindow::createMenuBar() {
@@ -95,7 +106,25 @@ void MainWindow::createMenuBar() {
     m_helpMenu = menuBar()->addMenu("&Help");
 }
 
-void MainWindow::createOptionsMenu() { }
+void MainWindow::createOptionsMenu() {
+    m_optionsMenu = new Options();
+
+    // creates the console dock
+    QDockWidget *dock = new QDockWidget("Operations Menu");
+    dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
+                          | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
+    // creates the console layout
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addWidget(m_optionsMenu);
+
+    // sets the layout to the console widget
+    QWidget *widget = new QWidget();
+    widget->setLayout(layout);
+
+    // adds the console widget to the dock
+    addDockWidget(Qt::RightDockWidgetArea, dock);
+}
 
 void MainWindow::createProgressBar() { }
 
@@ -110,20 +139,4 @@ void MainWindow::createToolBar() {
     m_toolBar->addAction(m_grindAction);
     m_toolBar->addAction(m_grabAction);
     m_toolBar->addAction(m_vacuumAction);
-}
-
-void MainWindow::commandLineInput() {
-    // sends command to command line then clears input box
-    QString command = m_input->text();
-    m_commandLine->addItem(command);
-    executeCommand(command);
-    m_input->clear();
-}
-
-void MainWindow::executeCommand(const QString &command) {
-    static QRegularExpression re("\\s+");
-    QStringList list = command.split(re);
-
-    if (command.toLower() == "clear")
-        m_commandLine->clear();
 }

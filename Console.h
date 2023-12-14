@@ -1,18 +1,16 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include "MainWindow.h"
-
 #include <QWidget>
 
 #include <QLineEdit>
 #include <QListWidget>
 
-class Console : public MainWindow {
+class Console : public QWidget {
     Q_OBJECT
 
 public:
-    Console(MainWindow *child = nullptr);
+    Console(QWidget *console = nullptr);
     ~Console();
 
 private slots:

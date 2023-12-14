@@ -3,7 +3,9 @@
 #include <QDockWidget>
 #include <QVBoxLayout>
 
-Console::Console(MainWindow *child) : MainWindow(child) { }
+Console::Console(QWidget *console) : QWidget(console) {
+    createConsole();
+}
 
 Console::~Console() { }
 
@@ -11,25 +13,6 @@ void Console::createConsole() {
     // initializes the command line
     m_console = new QListWidget();
     m_input = new QLineEdit();
-
-    // creates the command line dock
-    QDockWidget *dock = new QDockWidget("Command Line", this);
-    dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
-                          | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
-    // creates the command line layout
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(m_console);
-    layout->addWidget(m_input);
-
-    // sets the layout to the command line widget
-    QWidget *widget = new QWidget();
-    widget->setLayout(layout);
-
-    // adds the command line widget to the dock
-    dock->setWidget(widget);
-    addDockWidget(Qt::BottomDockWidgetArea, dock);
-    m_viewMenu->addAction(dock->toggleViewAction());
 
     // sets starting text
     m_console->addItem("Input command");
