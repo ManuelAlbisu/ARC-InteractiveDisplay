@@ -23,27 +23,27 @@ void MainWindow::createActions() {
     // cut action
     m_cutAction = new QAction("Cut");
     m_cutAction->setStatusTip("View cut options...");
-    m_cutAction->setIcon(QIcon(":/icons/test.svg"));
+    m_cutAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
 
     // drill action
     m_drillAction = new QAction("Drill");
     m_drillAction->setStatusTip("View drill options...");
-    m_drillAction->setIcon(QIcon(":/icons/test.svg"));
+    m_drillAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
 
     // grind action
     m_grindAction = new QAction("Grind");
     m_grindAction->setStatusTip("View grind options...");
-    m_grindAction->setIcon(QIcon(":/icons/test.svg"));
+    m_grindAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
 
     // grab action
     m_grabAction = new QAction("Grab");
     m_grabAction->setStatusTip("View grab options...");
-    m_grabAction->setIcon(QIcon(":/icons/test.svg"));
+    m_grabAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
 
     // vacuum action
     m_vacuumAction = new QAction("Vacuum");
     m_vacuumAction->setStatusTip("View vacuum options...");
-    m_vacuumAction->setIcon(QIcon(":/icons/test.svg"));
+    m_vacuumAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
 }
 
 void MainWindow::createCamera() {

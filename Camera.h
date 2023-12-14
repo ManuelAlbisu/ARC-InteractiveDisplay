@@ -12,12 +12,12 @@ class Camera : public QWidget {
     Q_OBJECT
 
 public:
-    Camera(QWidget *camera = nullptr);
+    Camera(QWidget *parent = nullptr);
     ~Camera();
 
 private:
-    void createCamera();
-    void createCameraDock();
+    void startCamera();
+    void stopCamera();
 
     QCamera *m_camera;
     QMediaCaptureSession m_captureSession;

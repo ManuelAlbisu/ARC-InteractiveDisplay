@@ -3,7 +3,7 @@
 #include <QImage>
 #include <QVideoFrame>
 
-Camera::Camera(QWidget *camera) : QWidget(camera), m_camera(new QCamera) {
+Camera::Camera(QWidget *parent) : QWidget(parent), m_camera(new QCamera) {
     m_videoLabel = new QLabel();
     m_videoSink = new QVideoSink();
 
@@ -22,13 +22,21 @@ Camera::Camera(QWidget *camera) : QWidget(camera), m_camera(new QCamera) {
     m_videoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // start camera module
-    m_camera->start();
+    startCamera();
 }
 
 Camera::~Camera() {
     // free memory when done with camera
-    m_camera->stop();
+    stopCamera();
     delete m_camera;
     delete m_videoSink;
     delete m_videoLabel;
+}
+
+void Camera::startCamera() {
+    m_camera->start();
+}
+
+void Camera::stopCamera() {
+    m_camera->stop();
 }

@@ -10,7 +10,7 @@ class Console : public QWidget {
     Q_OBJECT
 
 public:
-    Console(QWidget *console = nullptr);
+    Console(QWidget *parent = nullptr);
     ~Console();
 
 private slots:
@@ -18,8 +18,6 @@ private slots:
     void executeCommand(const QString &command);
 
 private:
-    void createConsole();
-
     QLineEdit *m_input;
     QListWidget *m_console;
 
