@@ -31,6 +31,10 @@ private:
     void createStatusBar();
     void createToolBar();
 
+    /* construct graphical elements */
+    QAction *makeAction(const QString &name, const QString &statusTip, const QString &icon);
+    void makeDock(QWidget *widget, const QString &name, Qt::DockWidgetArea area);
+
     /* actions */
     QAction *m_cutAction;
     QAction *m_drillAction;

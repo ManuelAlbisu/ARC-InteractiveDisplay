@@ -20,34 +20,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 MainWindow::~MainWindow() { }
 
 void MainWindow::createActions() {
-    // cut action
-    m_cutAction = new QAction("Cut");
-    m_cutAction->setStatusTip("View cut options...");
-    m_cutAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
-
-    // drill action
-    m_drillAction = new QAction("Drill");
-    m_drillAction->setStatusTip("View drill options...");
-    m_drillAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
-
-    // grind action
-    m_grindAction = new QAction("Grind");
-    m_grindAction->setStatusTip("View grind options...");
-    m_grindAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
-
-    // grab action
-    m_grabAction = new QAction("Grab");
-    m_grabAction->setStatusTip("View grab options...");
-    m_grabAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
-
-    // vacuum action
-    m_vacuumAction = new QAction("Vacuum");
-    m_vacuumAction->setStatusTip("View vacuum options...");
-    m_vacuumAction->setIcon(QIcon("../ARC-ID/icons/test.svg"));
+    m_cutAction = makeAction("Cut", "View cut options...", "test.svg");
+    m_drillAction = makeAction("Drill", "View drill options...", "test.svg");
+    m_grindAction = makeAction("Grind", "View grind options...", "test.svg");
+    m_grabAction = makeAction("Grab", "View grab options...", "test.svg");
+    m_vacuumAction = makeAction("Vacuum", "View vacuum options...", "test.svg");
 }
 
 void MainWindow::createCamera() {
     m_camera = new Camera();
+    // makeDock(m_camera, "Camera", Qt::TopDockWidgetArea);
 
     // creates camera dock
     QDockWidget *dock = new QDockWidget("Camera");
@@ -68,6 +50,7 @@ void MainWindow::createCamera() {
 
 void MainWindow::createConsole() {
     m_console = new Console();
+    // makeDock(m_console, "Command Line", Qt::BottomDockWidgetArea);
 
     // creates the console dock
     QDockWidget *dock = new QDockWidget("Command Line");
@@ -108,22 +91,7 @@ void MainWindow::createMenuBar() {
 
 void MainWindow::createOptionsMenu() {
     m_optionsMenu = new Options();
-
-    // creates the console dock
-    QDockWidget *dock = new QDockWidget("Operations Menu");
-    dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
-                          | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
-    // creates the console layout
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(m_optionsMenu);
-
-    // sets the layout to the console widget
-    QWidget *widget = new QWidget();
-    widget->setLayout(layout);
-
-    // adds the console widget to the dock
-    addDockWidget(Qt::RightDockWidgetArea, dock);
+    makeDock(m_optionsMenu, "Operations Menu", Qt::RightDockWidgetArea);
 }
 
 void MainWindow::createProgressBar() { }
@@ -139,4 +107,21 @@ void MainWindow::createToolBar() {
     m_toolBar->addAction(m_grindAction);
     m_toolBar->addAction(m_grabAction);
     m_toolBar->addAction(m_vacuumAction);
+}
+
+QAction *MainWindow::makeAction(const QString &name, const QString &statusTip, const QString &icon) {
+    QAction *action = new QAction(name);
+    action->setStatusTip(statusTip);
+    action->setIcon(QIcon(QString("../ARC-ID/icons/") + icon));
+
+    return action;
+}
+
+void MainWindow::makeDock(QWidget *widget, const QString &name, Qt::DockWidgetArea area) {
+    QDockWidget *dock = new QDockWidget(name, this);
+    dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
+                          | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dock->setWidget(widget);
+    addDockWidget(area, dock);
+    m_viewMenu->addAction(dock->toggleViewAction());
 }
