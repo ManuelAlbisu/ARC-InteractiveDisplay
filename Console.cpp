@@ -3,10 +3,22 @@
 #include <QDockWidget>
 #include <QVBoxLayout>
 
-Console::Console(QWidget *parent) : QWidget(parent) {
+Console::Console() { init(); }
+
+Console::~Console() { }
+
+void Console::init() {
+    // sends input from text box to command history
+    QObject::connect(m_input, SIGNAL(returnPressed()), nullptr, SLOT(consoleInput()));
+}
+
+QWidget *Console::console() {
     // initializes the console components
     m_console = new QListWidget();
     m_input = new QLineEdit();
+
+    // sets introduction text
+    m_console->addItem("Input command");
 
     // sets console components to a layout
     QVBoxLayout *layout = new QVBoxLayout();
@@ -17,14 +29,8 @@ Console::Console(QWidget *parent) : QWidget(parent) {
     QWidget *widget = new QWidget();
     widget->setLayout(layout);
 
-    // sets introduction text
-    m_console->addItem("Input command");
-
-    // sends input from text box to command history
-    connect(m_input, SIGNAL(returnPressed()), this, SLOT(consoleInput()));
+    return widget;
 }
-
-Console::~Console() { }
 
 void Console::consoleInput() {
     // reads contents user input and sends to command history

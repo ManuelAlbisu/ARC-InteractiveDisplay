@@ -19,7 +19,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+
 private:
+    /* initialization */
+    void init();
+
     /* graphical elements */
     void createActions();
     void createCamera();
@@ -31,7 +36,7 @@ private:
     void createStatusBar();
     void createToolBar();
 
-    /* construct graphical elements */
+    /* widget templates */
     QAction *makeAction(const QString &name, const QString &statusTip, const QString &icon);
     void makeDock(QWidget *widget, const QString &name, Qt::DockWidgetArea area);
 

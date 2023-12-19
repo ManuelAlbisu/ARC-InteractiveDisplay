@@ -5,20 +5,26 @@
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+    init();
+}
+
+MainWindow::~MainWindow() { }
+
+void MainWindow::init() {
     // set window size
     resize(800, 600);
 
     // populate window
     createActions();
-    createCamera();
+    //createCamera();
     createConsole();
     createMenuBar();
     createOptionsMenu();
     createToolBar();
 }
 
-MainWindow::~MainWindow() { }
 
+/* create actions */
 void MainWindow::createActions() {
     m_cutAction = makeAction("Cut", "View cut options...", "test.svg");
     m_drillAction = makeAction("Drill", "View drill options...", "test.svg");
@@ -27,47 +33,23 @@ void MainWindow::createActions() {
     m_vacuumAction = makeAction("Vacuum", "View vacuum options...", "test.svg");
 }
 
+
+/* create docks */
 void MainWindow::createCamera() {
-    m_camera = new Camera();
-    // makeDock(m_camera, "Camera", Qt::TopDockWidgetArea);
-
-    // creates camera dock
-    QDockWidget *dock = new QDockWidget("Camera");
-    dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
-                          | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
-    // creates the camera layout
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(m_camera);
-
-    // sets the layout to the camera widget
-    QWidget *widget = new QWidget();
-    widget->setLayout(layout);
-
-    // adds the camera widget to the dock
-    addDockWidget(Qt::TopDockWidgetArea, dock);
+    Camera *camera = new Camera();
+    makeDock(camera->camera(), "Camera", Qt::TopDockWidgetArea);
 }
 
 void MainWindow::createConsole() {
-    m_console = new Console();
-    // makeDock(m_console, "Command Line", Qt::BottomDockWidgetArea);
-
-    // creates the console dock
-    QDockWidget *dock = new QDockWidget("Command Line");
-    dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea
-                          | Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
-    // creates the console layout
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(m_console);
-
-    // sets the layout to the console widget
-    QWidget *widget = new QWidget();
-    widget->setLayout(layout);
-
-    // adds the console widget to the dock
-    addDockWidget(Qt::BottomDockWidgetArea, dock);
+    Console *console = new Console();
+    makeDock(console->console(), "Command Line", Qt::BottomDockWidgetArea);
 }
+
+void MainWindow::createOptionsMenu() {
+    m_optionsMenu = new Options();
+    makeDock(m_optionsMenu, "Operations Menu", Qt::RightDockWidgetArea);
+}
+
 
 void MainWindow::createMenuBar() {
     // file menu
@@ -89,11 +71,6 @@ void MainWindow::createMenuBar() {
     m_helpMenu = menuBar()->addMenu("&Help");
 }
 
-void MainWindow::createOptionsMenu() {
-    m_optionsMenu = new Options();
-    makeDock(m_optionsMenu, "Operations Menu", Qt::RightDockWidgetArea);
-}
-
 void MainWindow::createProgressBar() { }
 
 void MainWindow::createSideBar() { }
@@ -109,6 +86,8 @@ void MainWindow::createToolBar() {
     m_toolBar->addAction(m_vacuumAction);
 }
 
+
+/* templates */
 QAction *MainWindow::makeAction(const QString &name, const QString &statusTip, const QString &icon) {
     QAction *action = new QAction(name);
     action->setStatusTip(statusTip);

@@ -6,21 +6,20 @@
 #include <QLineEdit>
 #include <QListWidget>
 
-class Console : public QWidget {
-    Q_OBJECT
-
+class Console {
 public:
-    Console(QWidget *parent = nullptr);
+    Console();
     ~Console();
+    QWidget *console();
 
 private slots:
     void consoleInput();
     void executeCommand(const QString &command);
+    void init();
 
 private:
     QLineEdit *m_input;
     QListWidget *m_console;
-
 };
 
 #endif // CONSOLE_H

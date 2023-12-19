@@ -10,12 +10,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS
+    Core
     Multimedia
     Svg
     Widgets
 )
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
+    Core
     Multimedia
     Svg
     Widgets
@@ -29,12 +31,13 @@ set(PROJECT_SOURCES
         Console.h
         MainWindow.cpp
         MainWindow.h
+        Options.cpp
+        Options.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ARC-InteractiveDisplay MANUAL_FINALIZATION ${PROJECT_SOURCES}
-        Options.cpp
-        Options.h)
+)
 
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ARC-InteractiveDisplay APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -55,6 +58,7 @@ else()
 endif()
 
 target_link_libraries(ARC-InteractiveDisplay PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Multimedia
     Qt${QT_VERSION_MAJOR}::Svg
     Qt${QT_VERSION_MAJOR}::Widgets

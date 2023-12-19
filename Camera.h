@@ -1,24 +1,23 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <QWidget>
-
 #include <QCamera>
 #include <QMediaCaptureSession>
 #include <QVideoSink>
 #include <QLabel>
 
-class Camera : public QWidget {
-    Q_OBJECT
-
+class Camera {
 public:
-    Camera(QWidget *parent = nullptr);
+    Camera();
     ~Camera();
+    QWidget *camera();
 
-private:
+private slots:
+    void init();
     void startCamera();
     void stopCamera();
 
+private:
     QCamera *m_camera;
     QMediaCaptureSession m_captureSession;
     QVideoSink *m_videoSink;
