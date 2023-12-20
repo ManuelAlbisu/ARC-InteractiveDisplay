@@ -19,7 +19,7 @@ void MainWindow::init() {
 
     // create docks
     createCamera();
-    //createConsole();
+    createConsole();
     //createOptionsMenu();
 }
 
@@ -43,6 +43,8 @@ void MainWindow::createCamera() {
 void MainWindow::createConsole() {
     m_console = new Console();
     makeDock(m_console->console(), "Command Line", Qt::BottomDockWidgetArea);
+
+    connect(m_console->input(), SIGNAL(returnPressed()), this, SLOT(m_console->consoleInput()));
 }
 
 void MainWindow::createOptionsMenu() {
@@ -52,22 +54,11 @@ void MainWindow::createOptionsMenu() {
 
 
 void MainWindow::createMenuBar() {
-    // file menu
     m_fileMenu = menuBar()->addMenu("&File");
-
-    // edit menu
     m_editMenu = menuBar()->addMenu("&Edit");
-
-    // selection menu
     m_selectionMenu = menuBar()->addMenu("&Selection");
-
-    // view menu
     m_viewMenu = menuBar()->addMenu("&View");
-
-    // run menu
     m_runMenu = menuBar()->addMenu("&Run");
-
-    // help menu
     m_helpMenu = menuBar()->addMenu("&Help");
 }
 

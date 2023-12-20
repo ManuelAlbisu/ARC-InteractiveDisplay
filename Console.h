@@ -11,11 +11,11 @@ public:
     Console();
     ~Console();
     QWidget *console();
+    QLineEdit *input();
 
 private slots:
     void consoleInput();
     void executeCommand(const QString &command);
-    void init();
 
 private:
     QLineEdit *m_input;

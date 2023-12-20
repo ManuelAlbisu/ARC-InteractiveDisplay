@@ -3,14 +3,9 @@
 #include <QDockWidget>
 #include <QVBoxLayout>
 
-Console::Console() { init(); }
+Console::Console() : m_console(new QListWidget()), m_input(new QLineEdit) { }
 
 Console::~Console() { }
-
-void Console::init() {
-    // sends input from text box to command history
-    QObject::connect(m_input, SIGNAL(returnPressed()), nullptr, SLOT(consoleInput()));
-}
 
 QWidget *Console::console() {
     // initializes the console components
@@ -28,6 +23,8 @@ QWidget *Console::console() {
     // sets layout to a widget
     QWidget *widget = new QWidget();
     widget->setLayout(layout);
+
+    QObject::connect(m_input, SIGNAL(returnPressed()), nullptr, SLOT(consoleInput()));
 
     return widget;
 }
@@ -50,4 +47,8 @@ void Console::executeCommand(const QString &command) {
 
     if (command.toLower() == "clear")
         m_console->clear();
+}
+
+QLineEdit *Console::input() {
+    return m_input;
 }

@@ -5,7 +5,7 @@
 
 Camera::Camera() : m_camera(new QCamera) { startCamera(); }
 
-Camera::~Camera() { }
+Camera::~Camera() { stopCamera(); }
 
 QWidget *Camera::camera() {
     m_videoLabel = new QLabel();
