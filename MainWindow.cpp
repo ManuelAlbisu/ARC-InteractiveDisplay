@@ -4,9 +4,7 @@
 #include <QIcon>
 #include <QVBoxLayout>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-    init();
-}
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) { init(); }
 
 MainWindow::~MainWindow() { }
 
@@ -16,11 +14,13 @@ void MainWindow::init() {
 
     // populate window
     createActions();
-    //createCamera();
-    createConsole();
     createMenuBar();
-    createOptionsMenu();
     createToolBar();
+
+    // create docks
+    createCamera();
+    //createConsole();
+    //createOptionsMenu();
 }
 
 
@@ -36,13 +36,13 @@ void MainWindow::createActions() {
 
 /* create docks */
 void MainWindow::createCamera() {
-    Camera *camera = new Camera();
-    makeDock(camera->camera(), "Camera", Qt::TopDockWidgetArea);
+    m_camera = new Camera();
+    makeDock(m_camera->camera(), "Camera", Qt::TopDockWidgetArea);
 }
 
 void MainWindow::createConsole() {
-    Console *console = new Console();
-    makeDock(console->console(), "Command Line", Qt::BottomDockWidgetArea);
+    m_console = new Console();
+    makeDock(m_console->console(), "Command Line", Qt::BottomDockWidgetArea);
 }
 
 void MainWindow::createOptionsMenu() {

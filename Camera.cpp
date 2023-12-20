@@ -3,22 +3,13 @@
 #include <QImage>
 #include <QVideoFrame>
 
-Camera::Camera() { init(); }
+Camera::Camera() : m_camera(new QCamera) { startCamera(); }
 
 Camera::~Camera() { }
-
-void Camera::init() {
-    camera();
-    startCamera();
-}
 
 QWidget *Camera::camera() {
     m_videoLabel = new QLabel();
     m_videoSink = new QVideoSink();
-
-    // scale camera to fit frame
-    m_videoLabel->setMinimumSize(400, 400);
-    m_videoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // connect video sink to frame
     QObject::connect(m_videoSink, &QVideoSink::videoFrameChanged,
@@ -32,6 +23,10 @@ QWidget *Camera::camera() {
 
     m_captureSession.setCamera(m_camera);
     m_captureSession.setVideoSink(m_videoSink);
+
+    // scale camera to fit frame
+    m_videoLabel->setMinimumSize(400, 400);
+    m_videoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     return m_videoLabel;
 }

@@ -13,7 +13,6 @@ public:
     QWidget *camera();
 
 private slots:
-    void init();
     void startCamera();
     void stopCamera();
 
