@@ -27,12 +27,15 @@ set(PROJECT_SOURCES
         Camera.h
         Console.cpp
         Console.h
-        Joystick.h
         Joystick.cpp
+        Joystick.h
+        Joystick.qml
         MainWindow.cpp
         MainWindow.h
         Options.cpp
         Options.h
+        SideBar.cpp
+        SideBar.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

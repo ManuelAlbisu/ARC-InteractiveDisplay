@@ -3,7 +3,9 @@
 
 #include "Camera.h"
 #include "Console.h"
+#include "Joystick.h"
 #include "Options.h"
+#include "SideBar.h"
 
 #include <QMainWindow>
 
