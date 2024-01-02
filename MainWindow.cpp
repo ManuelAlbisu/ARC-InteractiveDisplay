@@ -4,11 +4,7 @@
 #include <QIcon>
 #include <QVBoxLayout>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) { init(); }
-
-MainWindow::~MainWindow() { }
-
-void MainWindow::init() {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     // set window size
     resize(800, 600);
 
@@ -20,11 +16,12 @@ void MainWindow::init() {
     // create docks
     createCamera();
     createConsole();
+    //createJoystick();
     //createOptionsMenu();
 }
 
+MainWindow::~MainWindow() { }
 
-/* create actions */
 void MainWindow::createActions() {
     m_cutAction = makeAction("Cut", "View cut options...", "test.svg");
     m_drillAction = makeAction("Drill", "View drill options...", "test.svg");
@@ -33,11 +30,9 @@ void MainWindow::createActions() {
     m_vacuumAction = makeAction("Vacuum", "View vacuum options...", "test.svg");
 }
 
-
-/* create docks */
 void MainWindow::createCamera() {
-    m_camera = new Camera();
-    makeDock(m_camera->camera(), "Camera", Qt::TopDockWidgetArea);
+    m_player = new Camera();
+    setCentralWidget(m_player);
 }
 
 void MainWindow::createConsole() {
@@ -47,11 +42,12 @@ void MainWindow::createConsole() {
     connect(m_console->input(), SIGNAL(returnPressed()), this, SLOT(m_console->consoleInput()));
 }
 
+void MainWindow::createJoystick() { }
+
 void MainWindow::createOptionsMenu() {
     m_optionsMenu = new Options();
     makeDock(m_optionsMenu, "Operations Menu", Qt::RightDockWidgetArea);
 }
-
 
 void MainWindow::createMenuBar() {
     m_fileMenu = menuBar()->addMenu("&File");
@@ -77,8 +73,6 @@ void MainWindow::createToolBar() {
     m_toolBar->addAction(m_vacuumAction);
 }
 
-
-/* templates */
 QAction *MainWindow::makeAction(const QString &name, const QString &statusTip, const QString &icon) {
     QAction *action = new QAction(name);
     action->setStatusTip(statusTip);

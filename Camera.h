@@ -3,7 +3,6 @@
 
 #include <QCamera>
 #include <QMediaCaptureSession>
-#include <QObject>
 #include <QVideoSink>
 #include <QWidget>
 
@@ -18,15 +17,15 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 private slots:
-    void findCamera();
+    void camera();
+    void drawImage(QPainter &painter, const QRect &frame, const QPixmap &image);
     void frameChanged(const QVideoFrame &frame);
-    void playCamera(Camera player);
 
 private:
     QCamera *m_camera;
     QMediaCaptureSession *m_capture;
     QPixmap m_pixmap;
-    QVideoSink *m_videoSink;
+    QVideoSink *m_sink;
 };
 
 #endif // CAMERA_H

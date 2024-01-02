@@ -14,6 +14,9 @@
 #include <QMenuBar>
 #include <QToolBar>
 
+// testing
+#include <QVideoSink>
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -21,16 +24,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    QMenu *m_viewMenu;
+
 private slots:
 
 private:
-    /* initialization */
-    void init();
-
     /* graphical elements */
     void createActions();
     void createCamera();
     void createConsole();
+    void createJoystick();
     void createMenuBar();
     void createOptionsMenu();
     void createProgressBar();
@@ -50,7 +54,7 @@ private:
     QAction *m_vacuumAction;
 
     /* camera */
-    Camera *m_camera;
+    Camera *m_player;
 
     /* console */
     Console *m_console;
@@ -67,10 +71,6 @@ private:
 
     /* tool bar */
     QToolBar *m_toolBar;
-
-protected:
-    QMenu *m_viewMenu;
-
 };
 
 #endif // MAINWINDOW_H
