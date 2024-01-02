@@ -11,12 +11,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS
     Multimedia
+    MultimediaWidgets
     Svg
     Widgets
 )
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
     Multimedia
+    MultimediaWidgets
     Svg
     Widgets
 )
@@ -61,6 +63,7 @@ endif()
 
 target_link_libraries(ARC-InteractiveDisplay PRIVATE
     Qt${QT_VERSION_MAJOR}::Multimedia
+    Qt${QT_VERSION_MAJOR}::MultimediaWidgets
     Qt${QT_VERSION_MAJOR}::Svg
     Qt${QT_VERSION_MAJOR}::Widgets
 )

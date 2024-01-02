@@ -3,24 +3,30 @@
 
 #include <QCamera>
 #include <QMediaCaptureSession>
+#include <QObject>
 #include <QVideoSink>
-#include <QLabel>
+#include <QWidget>
 
-class Camera {
+class Camera : public QWidget {
+    Q_OBJECT
+
 public:
-    Camera();
+    explicit Camera(QWidget *parent = nullptr);
     ~Camera();
-    QWidget *camera();
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
 
 private slots:
-    void startCamera();
-    void stopCamera();
+    void findCamera();
+    void frameChanged(const QVideoFrame &frame);
+    void playCamera(Camera player);
 
 private:
     QCamera *m_camera;
-    QMediaCaptureSession m_captureSession;
+    QMediaCaptureSession *m_capture;
+    QPixmap m_pixmap;
     QVideoSink *m_videoSink;
-    QLabel *m_videoLabel;
 };
 
 #endif // CAMERA_H

@@ -1,36 +1,63 @@
 #include "Camera.h"
 
-#include <QImage>
-#include <QVideoFrame>
+#include <algorithm>
 
-Camera::Camera() : m_camera(new QCamera) { startCamera(); }
+#include <QCameraDevice>
+#include <QMediaDevices>
+#include <QPainter>
 
-Camera::~Camera() { stopCamera(); }
+Camera::Camera(QWidget *parent) : QWidget(parent) { }
 
-QWidget *Camera::camera() {
-    m_videoLabel = new QLabel();
-    m_videoSink = new QVideoSink();
+Camera::~Camera() { }
 
-    // connect video sink to frame
-    QObject::connect(m_videoSink, &QVideoSink::videoFrameChanged,
-                     m_videoLabel, [this](const QVideoFrame &frame) {
-        if (!frame.isValid())
-            return;
+void drawImage(QPainter &painter, const QRect &frame, const QPixmap &image) {
+    float ratio = std::min((float)frame.width() / image.width(),
+                      (float)frame.height() / image.height());
+    int x = (frame.width() - image.width() * ratio) / 2;
+    int y = (frame.height() - image.height() * ratio) / 2;
 
-        QImage image = frame.toImage();
-        m_videoLabel->setPixmap(QPixmap::fromImage(image));
-    });
-
-    m_captureSession.setCamera(m_camera);
-    m_captureSession.setVideoSink(m_videoSink);
-
-    // scale camera to fit frame
-    m_videoLabel->setMinimumSize(400, 400);
-    m_videoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    return m_videoLabel;
+    painter.drawPixmap(x, y, image.width() * ratio, image.height() * ratio, image);
 }
 
-void Camera::startCamera() { m_camera->start(); }
+void Camera::findCamera() {
+    const QList<QCameraDevice> cameras = QMediaDevices::videoInputs();
 
-void Camera::stopCamera() { m_camera->stop(); }
+    for(const QCameraDevice &cameraDevice : cameras)
+        qDebug() << cameraDevice.description() << Qt::endl;
+
+    if(cameras.empty()) {
+        m_camera = nullptr;
+        m_capture = nullptr;
+        return;
+    }
+
+    m_camera = new QCamera(cameras.first());
+}
+
+void Camera::frameChanged(const QVideoFrame &frame) {
+    if(!frame.isValid())
+        return;
+
+    m_pixmap.convertFromImage(frame.toImage());
+    update();
+}
+
+void Camera::paintEvent(QPaintEvent *event) {
+    if(m_pixmap.isNull())
+        return;
+
+    QPainter painter(this);
+    drawImage(painter, rect(), m_pixmap);
+}
+
+void Camera::playCamera(Camera player) {
+    m_capture = new QMediaCaptureSession();
+    m_capture->setCamera(m_camera);
+
+    m_videoSink = new QVideoSink();
+    m_capture->setVideoOutput(m_videoSink);
+
+    connect(m_videoSink, &QVideoSink::videoFrameChanged, player, &Camera::frameChanged);
+
+    m_camera->start();
+}
