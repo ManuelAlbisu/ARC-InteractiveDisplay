@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     // create docks
     createCamera();
     createConsole();
-    //createJoystick();
+    createJoystick();
     //createOptionsMenu();
 }
 
@@ -32,6 +32,14 @@ void MainWindow::createActions() {
 
 void MainWindow::createCamera() {
     m_player = new Camera();
+    QCamera *camera = m_player->findCamera();
+    m_capture = new QMediaCaptureSession();
+    m_capture->setCamera(camera);
+    m_sink = new QVideoSink();
+    m_capture->setVideoOutput(m_sink);
+    connect(m_sink, &QVideoSink::videoFrameChanged, m_player, &Camera::frameChanged);
+    camera->start();
+
     setCentralWidget(m_player);
 }
 
@@ -42,7 +50,28 @@ void MainWindow::createConsole() {
     connect(m_console->input(), SIGNAL(returnPressed()), this, SLOT(m_console->consoleInput()));
 }
 
-void MainWindow::createJoystick() { }
+void MainWindow::createJoystick() {
+    /* left joystick */
+    Joystick *joystick1 = new Joystick();
+    QVBoxLayout *layout1 = new QVBoxLayout();
+    layout1->addStretch();
+    layout1->addWidget(joystick1);
+    layout1->addStretch();
+
+    /* right joystick */
+    Joystick *joystick2 = new Joystick();
+    QVBoxLayout *layout2 = new QVBoxLayout();
+    layout2->addStretch();
+    layout2->addWidget(joystick2);
+    layout2->addStretch();
+
+    /* join layouts */
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->addLayout(layout1);
+    layout->addStretch();
+    layout->addLayout(layout2);
+    m_player->setLayout(layout);
+}
 
 void MainWindow::createOptionsMenu() {
     m_optionsMenu = new Options();

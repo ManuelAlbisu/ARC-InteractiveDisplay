@@ -12,14 +12,17 @@ class Camera : public QWidget {
 public:
     explicit Camera(QWidget *parent = nullptr);
     ~Camera();
+    QCamera *findCamera();
+
+public slots:
+    void frameChanged(const QVideoFrame &frame);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private slots:
-    void camera();
+    //void camera();
     void drawImage(QPainter &painter, const QRect &frame, const QPixmap &image);
-    void frameChanged(const QVideoFrame &frame);
 
 private:
     QCamera *m_camera;

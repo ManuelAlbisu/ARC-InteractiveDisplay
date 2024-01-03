@@ -54,7 +54,9 @@ private:
     QAction *m_vacuumAction;
 
     /* camera */
+    QMediaCaptureSession *m_capture;
     Camera *m_player;
+    QVideoSink *m_sink;
 
     /* console */
     Console *m_console;
