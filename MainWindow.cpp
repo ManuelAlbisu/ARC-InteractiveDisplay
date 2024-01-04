@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 MainWindow::~MainWindow() { }
 
+/* graphical elements */
 void MainWindow::createActions() {
     m_cutAction = makeAction("Cut", "View cut options...", "cut.svg");
     m_drillAction = makeAction("Drill", "View drill options...", "drill.svg");
@@ -41,6 +42,8 @@ void MainWindow::createCamera() {
 
     setCentralWidget(m_player);
 }
+
+void MainWindow::createCameraButtons() { }
 
 void MainWindow::createConsole() {
     m_console = new Console();

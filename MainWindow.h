@@ -10,13 +10,11 @@
 #include <QMainWindow>
 
 #include <QAction>
+#include <QBoxLayout>
 #include <QMenu>
 #include <QMenuBar>
 #include <QToolBar>
-
-// testing
 #include <QVideoSink>
-#include <QVBoxLayout>
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -28,12 +26,11 @@ public:
 protected:
     QMenu *m_viewMenu;
 
-private slots:
-
 private:
     /* graphical elements */
     void createActions();
     void createCamera();
+    void createCameraButtons();
     void createConsole();
     void createJoystick();
     void createMenuBar();
