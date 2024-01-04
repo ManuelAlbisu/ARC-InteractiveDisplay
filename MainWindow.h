@@ -16,6 +16,7 @@
 
 // testing
 #include <QVideoSink>
+#include <QVBoxLayout>
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -45,6 +46,7 @@ private:
     /* widget templates */
     QAction *makeAction(const QString &name, const QString &statusTip, const QString &icon);
     void makeDock(QWidget *widget, const QString &name, Qt::DockWidgetArea area);
+    QVBoxLayout *makeJoystick(Joystick *joystick);
 
     /* actions */
     QAction *m_cutAction;

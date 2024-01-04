@@ -2,7 +2,6 @@
 
 #include <QDockWidget>
 #include <QIcon>
-#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     // set window size
@@ -23,11 +22,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 MainWindow::~MainWindow() { }
 
 void MainWindow::createActions() {
-    m_cutAction = makeAction("Cut", "View cut options...", "test.svg");
-    m_drillAction = makeAction("Drill", "View drill options...", "test.svg");
-    m_grindAction = makeAction("Grind", "View grind options...", "test.svg");
-    m_grabAction = makeAction("Grab", "View grab options...", "test.svg");
-    m_vacuumAction = makeAction("Vacuum", "View vacuum options...", "test.svg");
+    m_cutAction = makeAction("Cut", "View cut options...", "cut.svg");
+    m_drillAction = makeAction("Drill", "View drill options...", "drill.svg");
+    m_grindAction = makeAction("Grind", "View grind options...", "grind.svg");
+    m_grabAction = makeAction("Grab", "View grab options...", "grab.svg");
+    m_vacuumAction = makeAction("Vacuum", "View vacuum options...", "vacuum.svg");
 }
 
 void MainWindow::createCamera() {
@@ -53,17 +52,11 @@ void MainWindow::createConsole() {
 void MainWindow::createJoystick() {
     /* left joystick */
     Joystick *joystick1 = new Joystick();
-    QVBoxLayout *layout1 = new QVBoxLayout();
-    layout1->addStretch();
-    layout1->addWidget(joystick1);
-    layout1->addStretch();
+    QVBoxLayout *layout1 = makeJoystick(joystick1);
 
     /* right joystick */
     Joystick *joystick2 = new Joystick();
-    QVBoxLayout *layout2 = new QVBoxLayout();
-    layout2->addStretch();
-    layout2->addWidget(joystick2);
-    layout2->addStretch();
+    QVBoxLayout *layout2 = makeJoystick(joystick2);
 
     /* join layouts */
     QHBoxLayout *layout = new QHBoxLayout();
@@ -102,6 +95,7 @@ void MainWindow::createToolBar() {
     m_toolBar->addAction(m_vacuumAction);
 }
 
+/* templates */
 QAction *MainWindow::makeAction(const QString &name, const QString &statusTip, const QString &icon) {
     QAction *action = new QAction(name);
     action->setStatusTip(statusTip);
@@ -117,4 +111,13 @@ void MainWindow::makeDock(QWidget *widget, const QString &name, Qt::DockWidgetAr
     dock->setWidget(widget);
     addDockWidget(area, dock);
     m_viewMenu->addAction(dock->toggleViewAction());
+}
+
+QVBoxLayout *MainWindow::makeJoystick(Joystick *joystick) {
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addStretch();
+    layout->addWidget(joystick);
+    layout->addStretch();
+
+    return layout;
 }
